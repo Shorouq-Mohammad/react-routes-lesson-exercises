@@ -22,20 +22,27 @@ class App extends Component {
       ]
     }
   }
-  
+  options = () =>{
+    const wizards = this.state.wizards.map(w => {return {value: 'wizards', label: w.name}})
+    const bestiary = this.state.bestiary.map(b => {return {value: 'bestiary', label: b.name}})
+    return [...wizards, ...bestiary]
+  }
+
   render() {
   const state = this.state
+  const options = this.options()
   return (
     <Router> 
       <div className="App">
-        <div id="home-background"></div>
+        <div id="home-background">
+        </div>
         <div id="main-links">
           <Link to="/">Home</Link>
           <Link to='/about'>About</Link>
         </div>
         {/* Routes go here v */}
         <Switch>
-          <Route exact path="/" component={Home}/>
+          <Route exact path="/" render= {()=> <Home options={options}/>}/>
           <Route exact path="/about" render={()=> <About items={Object.keys(state)} />} />
           <Route path="/directory/:fentities" exact render={({ match }) => <Fentities match={match} state={state}/>}/>
           <Route path="/directory/:fentities/:name" exact render={({ match }) => <Fentity match={match} state={state}/>}/>

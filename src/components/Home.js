@@ -1,16 +1,31 @@
 import React, { Component } from 'react';
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 
 import '../styles/home.css'
+import Select from 'react-select'
 
 class Home extends Component {
-
+    constructor(){
+        super()
+        this.state = {toFentity:false , fentity: null, name:null}
+    }
+    handleChange = (event) => {
+        console.log(event)
+        this.setState({
+            toFentity: true,
+            fentity: event.value,
+            name: event.label
+        })
+    }
     render() {
+        if(this.state.toFentity){
+            return <Redirect push to={`/directory/${this.state.fentity}/${this.state.name}`} />
+        }
         return (
             <div>
                 <div id="u-input">
-                    <input type="text" placeholder="Ask and you shall receive" />
-                    <div id="button">Seek</div>
+                    <Select options={this.props.options} isSearchable={true} id='select' onChange={this.handleChange} onInputChange={this.onInputChange}/>
+                    <div id="button" >Seek</div>
                 </div>
 
                 <h1 id="home-title">Your Adventure</h1>
